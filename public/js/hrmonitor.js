@@ -362,7 +362,7 @@ var Main = (function(){
 		this.seconds.textContent = (Date.now()-this.startTime)/1000;
 		if(this.hrmonitor.buffer.length >= this.hrmonitor.bufferSize - 5){
 			console.log(this.bpm.bpm);
-			this.bpmElement.textContent = this.bpm.bpm;
+			this.bpmElement.textContent = parseInt(this.bpm.bpm);
 			//this.chart.updateBpm(this.bpm.bpm);
 		}
 		//this.chart.render();
