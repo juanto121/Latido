@@ -1,0 +1,93 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Place favicon.ico in the root directory -->
+
+        <link rel="stylesheet" href="css/vendor/normalize.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/main.css">
+
+    </head>
+    <body>
+    <main>
+    
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <div class="container ">
+            <div class="section">
+                <h1 class="title pink lighten-1">Heartbeat</h1>
+            </div>
+            <div class="section">
+                <div class="row">
+                    <div class="col s4 offset-s4">
+                        <div class="round-card round-progress waves-effect  waves-red">
+                            <div class="round-card-content center-align  center">
+                                <div id="bpm">--<span>bpm</span><span id="seconds">--</span></div>
+                                <div><i class="fa fa-heart"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row center-align">
+                <div class="col s6">
+                    <h3>How to use</h3>
+                    <ol class="left-align">
+                    <li>Allow the site to use the camera</li>
+                    <li>make sure this is your forehead:<canvas id="snapshot" width="40" height="20"></canvas></li>
+                    <li>When you click start don't move!</li>
+                    </ol>
+                    <div>
+                        <video id ="video" src="" autoplay></video>
+                    </div>
+                </div>
+                <div class="col s6">
+                    <h3>Heart log</h3>
+                    <ol class="left-align">
+                        <li>89 bpm  - Rest</li>
+                        <li>90 bpm  - Fat burn</li>
+                        <li>110 bpm - Cardio</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <video id ="video" src="" autoplay></video>
+            <div id="chart"></div>
+        </div>
+
+        
+		<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="js/vendor/everpolate.browserified.min.js"></script>
+        <script src="js/vendor/numeric-1.2.6.min.js"></script>
+        <script src="js/vendor/dsp.js"></script>
+        <script src="js/vendor/jquery.facedetection.min.js"></script>
+        <script src="js/vendor/d3.v3.js"></script>
+        <script src="js/vendor/rickshaw.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+	
+        <script src="dist/latido.js"></script>
+     </main>
+     </body>
+
+       <footer class="page-footer  blue-grey lighten-1">
+          <div class="footer-copyright">
+            <div class="container">
+            Made by Juan Torres
+            <a class="grey-text text-lighten-4 right" href="https://github.com/juanto121"><i class="fa fa-github" aria-hidden="true"></i> /juanto121</a>
+            </div>
+          </div>
+        </footer>
+</html>
