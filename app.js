@@ -8,11 +8,11 @@ var express		= require('express'),
 
 var fs 			= require('fs'),
 	https		= require('https'),
-	privateKey 	= fs.readFileSync('./certificates/nkey.pem','utf8'),
-	certificate = fs.readFileSync('./certificates/cert.pem', 'utf8'),
+	privateKey 	= fs.readFileSync('./certificates/server.key','utf8'),
+	certificate = fs.readFileSync('./certificates/server.crt', 'utf8'),
 	credentials = {key: privateKey, cert: certificate},
 	serverssl 	= require('https').createServer(credentials, app),
-	portssl 	= process.env.PORT_SSL || 5443;
+	portssl 	= process.env.PORT_SSL || 443;
 
 // Set-up	============================================
 
@@ -24,6 +24,7 @@ app.set('view engine', 'ejs');
 app.set('views', __dirname + '/public/views');
 
 app.use(express.static( __dirname +'/public'));
+app.use(express.static(__dirname));
 
 // Routes	============================================
 
@@ -34,7 +35,8 @@ route(app);
 app.listen(port,function(){
 	console.log("Listening port: " + port);
 });
-
+/*
 serverssl.listen(portssl, function(){
 	console.log("Listening port:" + portssl);
 });
+*/

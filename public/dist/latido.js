@@ -1,4 +1,4 @@
-/*! latido - v1.0.0 - 2016-06-05
+/*! latido - v1.0.0 - 2016-06-06
 * Copyright (c) 2016 ; Licensed  */
 var Hrmonitor = (function(){
 	function Hrmonitor(){
@@ -364,7 +364,7 @@ var Main = (function(){
 		this.seconds.textContent = (Date.now()-this.startTime)/1000;
 		if(this.hrmonitor.buffer.length >= this.hrmonitor.bufferSize - 5){
 			console.log(this.bpm.bpm);
-			this.bpmElement.textContent = Math.ceil(this.bpm.bpm);
+			this.bpmElement.textContent = this.bpm.bpm;
 			//this.chart.updateBpm(this.bpm.bpm);
 		}
 		//this.chart.render();
@@ -405,8 +405,37 @@ var Main = (function(){
 	return Main;
 })();
 
+/*
 window.onload = function(){
 	var main = new Main();
 	main.update();
 };
+*/
 
+var ServiceWorker = (function(){
+	function ServiceWorker(){
+		this.init();
+	}
+
+	var worker = ServiceWorker.prototype;
+
+	worker.init  = function(){
+		/*
+		if('serviceWorker' in navigator){
+			navigator.serviceWorker
+					.register('/sw.js')
+					.then(function(){
+						console.log("Service Worker Registered");
+					});
+		}
+		*/
+	};
+
+	return ServiceWorker;
+})();
+
+window.onload = function(){
+	var main = new Main();
+	main.update();
+	var sworker = new ServiceWorker();
+};

@@ -403,7 +403,9 @@ var Main = (function(){
 	return Main;
 })();
 
+/*
 window.onload = function(){
 	var main = new Main();
 	main.update();
 };
+*/
