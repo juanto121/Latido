@@ -6,6 +6,7 @@ var express		= require('express'),
 	bodyParser	= require('body-parser'),
 	route		= require('./app/routes.js');
 
+/*
 var fs 			= require('fs'),
 	https		= require('https'),
 	privateKey 	= fs.readFileSync('./certificates/server.key','utf8'),
@@ -13,6 +14,7 @@ var fs 			= require('fs'),
 	credentials = {key: privateKey, cert: certificate},
 	serverssl 	= require('https').createServer(credentials, app),
 	portssl 	= process.env.PORT_SSL || 443;
+*/
 
 // Set-up	============================================
 
