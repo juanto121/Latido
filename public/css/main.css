@@ -32,6 +32,7 @@ video{
 	color:#f06292;
 	border-radius:50%;
 	position: relative;
+    margin: 0 auto;
 }
 
 .round-card-content{
