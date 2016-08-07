@@ -16,7 +16,7 @@ var Hrmonitor = (function(){
 			256/60 = 4.2s
 		*/
 
-		this.bufferSize = 512;
+		this.bufferSize = 1024;
 		this.buffer = [];
 		this.dataTimes = [];
 		this.dataValues = [];
