@@ -86,6 +86,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-obfuscator');
 
   // Default task.
-  grunt.registerTask('default', ['concat', 'uglify', 'obfuscator']);
+  grunt.registerTask('default', ['concat', 'uglify']);
 
 };

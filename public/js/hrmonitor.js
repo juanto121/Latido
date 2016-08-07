@@ -98,12 +98,12 @@ var Hrmonitor = (function(){
 			Resolution of fft: The output of the fft gives 128 different frequencies
 			for a max freq of 30Hz, the min resolution of each bin is 30/128 = 0.23
 			
-			This is not right, but why?
+			This is wrong:
 			zeroth bin : 	[0.0,  0.23]
 			first bin : 	[0.24, 0.46]
 							[0.46, 0.70]
 							[0.71, 0.93]
-							[0.94, 1.11] <- 0.94Hz = 0.94 * 60 = 56.4 bpm								
+							[0.94, 1.11]							
 		*/
 		
 		var fft = this.getFFT();
