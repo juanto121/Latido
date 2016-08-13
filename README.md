@@ -6,7 +6,7 @@ Libraries used:
 - Jquery facedetection plugin [face Detection](https://github.com/jaysalvat/jquery.facedetection)
 - Fast Fourier Transform [dsp.js](https://github.com/corbanbrook/dsp.js/)
 - Numeric for linear interpolation: [numeric.js](http://www.numericjs.com/)
-- Javascript time series graph [rickshaw.js](https://github.com/jaysalvat/jquery.facedetection)
+- Javascript time series graph [rickshaw.js](https://github.com/shutterstock/rickshaw)
 
 Similar projects:
 
