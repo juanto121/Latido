@@ -21,10 +21,12 @@ Make sure to: Don't move and have good lighting.
 Current setup uses a buffer of 1024 samples so it takes about 17 seconds to estimate the heart beat on a desktop/laptop taking video at 60 FPS
 
 ## Installation
-> git clone https://github.com/juanto121/latido.git
-> npm install
-> node app.js
+```
+git clone https://github.com/juanto121/latido.git
+npm install
+node app.js
+```
 
 ## TODO
-Hartbeat graphics.
-Improve accuracy.
+- Heartbeat graphics.
+- Improve accuracy.
