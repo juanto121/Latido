@@ -43,7 +43,7 @@ var Hrmonitor = (function(){
 
 	hrmonitor.addSample = function(sample){
 		if(this.bufferFull()){
-			this.buffer.shift(); 
+			this.buffer.shift();
 			this.dataTimes.shift();
 			this.dataValues.shift();
 		}
@@ -55,7 +55,7 @@ var Hrmonitor = (function(){
 	};
 
 	hrmonitor.getFFT = function(){
-		var len = this.bufferSize;	
+		var len = this.bufferSize;
 
 		var startTime = this.dataTimes[0];
 		var endTime = this.dataTimes[this.dataTimes.length-1];
@@ -72,11 +72,11 @@ var Hrmonitor = (function(){
 
 
 	hrmonitor.binToBpm = function(bin){
-		
+
 		/*
-			60s * bin.index  *    fps / 2    
+			60s * bin.index  *    fps / 2
 			                   -------------
-			                    fft.size / 2 
+			                    fft.size / 2
 		*/
 
 		return (60*bin*this.getFps())/this.bufferSize;
@@ -90,24 +90,24 @@ var Hrmonitor = (function(){
 
 		/*
 			256 samples are passed to FFT
-			Sample rate: each sample takes 1/fps seconds. 
+			Sample rate: each sample takes 1/fps seconds.
 				eg. 60 fps means each frame takes 0.016 s or 16ms
 			Thus 256 samples take 256/fps seconds. eg. 256/60 = 4.26s
-			Max frequency I can get is fps/2. 60Hz/2 = 30 Hz 
+			Max frequency I can get is fps/2. 60Hz/2 = 30 Hz
 				which is > than normal freq of heartrate = [0.83hz,3Hz] = [50bpm,180bpm]
 			Resolution of fft: The output of the fft gives 128 different frequencies
 			for a max freq of 30Hz, the min resolution of each bin is 30/128 = 0.23
-			
+
 			This is wrong:
 			zeroth bin : 	[0.0,  0.23]
 			first bin : 	[0.24, 0.46]
 							[0.46, 0.70]
 							[0.71, 0.93]
-							[0.94, 1.11]							
+							[0.94, 1.11]
 		*/
-		
+
 		var fft = this.getFFT();
-		
+
 		var binindex = 0;
 		var len = fft.length;
 
@@ -126,7 +126,7 @@ var Hrmonitor = (function(){
 			}
 		}
 
-		return { bpm:this.binToBpm(maxbpmindex), freqs:fft};
+		return { bpm:this.binToBpm(maxbpmindex), freqs:fft };
 	};
 
 	return Hrmonitor;
@@ -142,7 +142,7 @@ var Camera = (function(){
 	camera.initCamera = function(){
 		this.cameraReady = false;
 		this.videoElement = document.querySelector('video');
-		navigator.getMedia = 	(navigator.getUserMedia || 
+		navigator.getMedia = 	(navigator.getUserMedia ||
 								navigator.webkitGetUserMedia ||
 								navigator.mozGetUserMedia ||
 								navigator.msGetUserMedia );
@@ -255,7 +255,7 @@ var ImageProcessor = (function(){
 
 	processor.sampleFrame = function(frame, fh){
 		// frame: video element with image
-		// fh: forehead position 
+		// fh: forehead position
 
 		//returns average value on green channel in a frame.
 		//void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
@@ -272,7 +272,7 @@ var ImageProcessor = (function(){
 		this.ctx.drawImage(frame, sx, sy, sw, sh, dx, dy, dw, dh);
 		var img = this.ctx.getImageData(0,0,sw,sh);
 		var len = img.data.length;
-		
+
 		var i = 1;
 		var count = 0;
 		var gAvg = 0;
@@ -281,7 +281,7 @@ var ImageProcessor = (function(){
 			gAvg += img.data[i];
 			count ++;
 		}
-		
+
 
 		gAvg = gAvg / count;
 
@@ -294,17 +294,19 @@ var ImageProcessor = (function(){
 
 
 var Graph = (function(){
-	function Graph(){
-		this.init();
+	function Graph(elementId){
+		this.init(elementId);
 	}
+
 	var graph = Graph.prototype;
 
-	graph.init = function(){
+	graph.init = function(elementId){
+	  this.palette = new Rickshaw.Color.Palette({scheme:'spectrum2000'})
 		this.chart = new Rickshaw.Graph({
-				element: document.getElementById("chart"),
-				height: 500,
+				element: document.getElementById(elementId),
+				height: 100,
 				renderer: 'line',
-				series: new Rickshaw.Series.FixedDuration([{ name: 'one', color:'green' },{name:'two', color:'red'}], undefined, {
+				series: new Rickshaw.Series.FixedDuration([{ name: 'one', color: this.palette.color() }], undefined, {
 							timeInterval: 250,
 							maxDataPoints: 100,
 							timeBase: new Date().getTime() / 1000
@@ -314,14 +316,8 @@ var Graph = (function(){
 		this.chart.render();
 	};
 
-	graph.updateRawSample = function(data){
-		var avgGreen = {one:data};
-		this.chart.series.addData(avgGreen);
-	};
-
-	graph.updateBpm = function(bpm){
-		var bpmSeries = {two:bpm};
-		this.chart.series.addData(bpmSeries);
+	graph.updateData = function(data){
+		this.chart.series.addData({one:data});
 	};
 
 	graph.render = function(){
@@ -355,29 +351,30 @@ var Main = (function(){
 
 		this.faceDetector.setListener(this.faceDetected.bind(this));
 
-		this.chart = new Graph();
+		this.rawChart = new Graph('raw-chart');
+		this.bpmChart = new Graph('bpm-chart');
 	};
 
 	main.updateUI = function(){
 		this.seconds.textContent = (Date.now()-this.startTime)/1000;
 		if(this.hrmonitor.buffer.length >= this.hrmonitor.bufferSize - 5){
-			console.log(this.bpm.bpm);
 			this.bpmElement.textContent = parseInt(this.bpm.bpm);
-			//this.chart.updateBpm(this.bpm.bpm);
+			this.bpmChart.updateData(this.bpm.bpm);
 		}
-		//this.chart.render();
+		this.rawChart.render();
+		this.bpmChart.render();
 	};
 
 	main.update = function(){
 
 		this.last = Date.now();
 		var interval = this.last - this.current;
-		
+
 		if(this.camera.isReady()){
 			if(this.hrmonitor.isReady() ){
 				this.bpm = this.hrmonitor.getBpm();
 				this.sampleFrame();
-				this.updateUI();				
+				this.updateUI();
 			}else{
 				this.faceDetector.getFaces(this.camera.videoElement);
 				this.current = this.last;
@@ -396,16 +393,9 @@ var Main = (function(){
 	main.sampleFrame = function(){
 		var sample = this.imageproc.sampleFrame(this.videoElement, this.faceTracker.getForehead());
 		this.hrmonitor.addSample(sample);
-		//this.chart.updateRawSample(sample.value);
+		this.rawChart.updateData(sample.value);
 		return sample;
 	};
 
 	return Main;
 })();
-
-/*
-window.onload = function(){
-	var main = new Main();
-	main.update();
-};
-*/

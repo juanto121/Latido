@@ -5,17 +5,7 @@ var ServiceWorker = (function(){
 
 	var worker = ServiceWorker.prototype;
 
-	worker.init  = function(){
-		/*
-		if('serviceWorker' in navigator){
-			navigator.serviceWorker
-					.register('/sw.js')
-					.then(function(){
-						console.log("Service Worker Registered");
-					});
-		}
-		*/
-	};
+	worker.init  = function(){ };
 
 	return ServiceWorker;
 })();

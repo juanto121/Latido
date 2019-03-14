@@ -1,5 +1,5 @@
 body{
-	background-color: #fce4ec;
+	background-color: #FFFFFF;
 	color:#f06292;
 	display: flex;
     min-height: 100vh;
@@ -11,10 +11,6 @@ main {
 }
 
 video{
-	display:none;
-}
-
-#chart{
 	display:none;
 }
 
@@ -37,7 +33,7 @@ video{
 
 .round-card-content{
 	position: absolute;
-	top:50%;	
+	top:50%;
 	left:50%;
 	width: 100px;
 	height: 100px;
@@ -56,4 +52,14 @@ video{
 #seconds{
 	top:1.5em;
 	position: absolute;
+}
+
+#raw-chart {
+    max-width: 600px;
+    max-height: 100px;
+}
+
+#bpm-chart {
+    max-width: 600px;
+    max-height: 100px;
 }
