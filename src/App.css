@@ -1,0 +1,8 @@
+.App {
+    margin: 0;
+    background: linear-gradient(#FFB5D8, #ffd6db);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: Montserrat;
+}

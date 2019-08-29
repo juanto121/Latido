@@ -1,0 +1,30 @@
+.LatidoContent {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.measure-circle {
+    height: 300px;
+    width: 300px;
+    border: 7px solid #D4268F;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.measure-circle-bpm {
+    color: rgba(212, 38, 143, 0.49);
+    font-size: 40px;
+    font-weight: 600;
+}
+
+.measure-circle-bpm > .bpm-highlight {
+    color: #D4268F;
+}
+
+.measure-circle-subtitle {
+    color: rgba(212, 38, 143, 0.49);
+}
