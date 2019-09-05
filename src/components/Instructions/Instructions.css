@@ -1,0 +1,24 @@
+.instructions-container {
+    margin: 0 auto;
+}
+
+.start-button {
+    background-color: #D4268F;
+    width: 100px;
+    height: 20px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    border-radius: 2px;
+    color: white;
+    font-weight: 600;
+    margin:0 auto;
+}
+
+.instructions-text {
+    width: 400px;
+    padding: 10px;
+    margin:0 auto;
+    text-align: center;
+}

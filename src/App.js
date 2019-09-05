@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
-import { LatidoHeader, LatidoContent } from './components'
+import LatidoContent from './Containers/Latido/LatidoContent'
+import LatidoHeader from './components/LatidoHeader/LatidoHeader'
 
 function App() {
   return (
