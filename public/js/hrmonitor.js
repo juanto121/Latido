@@ -155,7 +155,7 @@ var Camera = (function(){
 		this.mediaStream = mediaStream;
 		var currentCam = this;
 		var video = this.videoElement;
-		this.videoElement.src = window.URL.createObjectURL(mediaStream);
+		this.videoElement.srcObject = mediaStream
 		this.videoElement.onloadedmetadata = function(e){
 			//process video
 			currentCam.cameraReady = true;
