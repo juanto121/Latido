@@ -13,6 +13,7 @@
     flex-direction: column;
     justify-content: center;
     text-align: center;
+    align-items: center;
 }
 
 .measure-circle-bpm {
@@ -27,4 +28,34 @@
 
 .measure-circle-subtitle {
     color: rgba(212, 38, 143, 0.49);
+}
+
+.guideLine {
+    width: 260px;
+    height: 1px;
+    background-color: #D4268F;
+    position: absolute;
+    top: 70px;
+    right: 27px;
+}
+
+.guideLine .left {
+
+}
+
+.guideLine .right {
+
+}
+
+.guideLineHorizontal {
+    top: 156px;
+    width: 300px;
+    height: 1px;
+    background-color: #D4268F;
+    transform: rotate(90deg);
+    left: 7px;
+}
+
+.latido-container {
+    position:relative;
 }

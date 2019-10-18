@@ -1,0 +1,8 @@
+svg {
+    position: absolute;
+}
+
+.VideoCapture {
+    clip-path: url(#clip);
+    width: 100%;
+}
