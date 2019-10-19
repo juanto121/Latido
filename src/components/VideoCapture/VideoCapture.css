@@ -1,8 +1,8 @@
-svg {
-    position: absolute;
+.videoCaptureContainer {
+
 }
 
 .VideoCapture {
-    clip-path: url(#clip);
-    width: 100%;
+    clip-path: circle(151px at 320px 243px);
+    filter: blur(7px);
 }

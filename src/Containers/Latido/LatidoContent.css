@@ -31,31 +31,43 @@
 }
 
 .guideLine {
-    width: 260px;
-    height: 1px;
     background-color: #D4268F;
     position: absolute;
-    top: 70px;
-    right: 27px;
+    transform: rotate(90deg);
+    height: 3px;
 }
 
-.guideLine .left {
-
+.guideLine.left {
+    left: -16px;
+    top: 157px;
+    width: 306px;
 }
 
-.guideLine .right {
-
+.guideLine.right {
+    left: 34px;
+    top: 157px;
+    width: 306px;
 }
 
 .guideLineHorizontal {
     top: 156px;
-    width: 300px;
-    height: 1px;
     background-color: #D4268F;
-    transform: rotate(90deg);
     left: 7px;
+    transform: none;
+}
+
+.guideLineHorizontal.top {
+    top: 90px;
+    left: 20px;
+    width: 276px;
+}
+
+.guideLineHorizontal.bottom {
+    top: 50px;
+    left: 50px;
+    width: 220px;
 }
 
 .latido-container {
-    position:relative;
+    position: relative;
 }
