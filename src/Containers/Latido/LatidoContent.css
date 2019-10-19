@@ -1,7 +1,7 @@
 .LatidoContent {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
 .measure-circle {
@@ -38,15 +38,15 @@
 }
 
 .guideLine.left {
-    left: -16px;
+    left: -27px;
     top: 157px;
     width: 306px;
 }
 
 .guideLine.right {
-    left: 34px;
+    left: 49px;
     top: 157px;
-    width: 306px;
+    width: 299px;
 }
 
 .guideLineHorizontal {
@@ -70,4 +70,14 @@
 
 .latido-container {
     position: relative;
+}
+
+.camera-setup-instructions {
+    width: 450px;
+    text-align: center;
+    color: #D4268F;
+}
+
+.camera-setup-instructions h4{
+    color: #d4429e;
 }

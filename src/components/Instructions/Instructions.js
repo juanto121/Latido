@@ -7,9 +7,11 @@ const Instructions = props => {
     return (
         <div className="instructions-container">
             <div className="instructions-text">
-                - enable camera
-                - wait till face detects
-                - stay still
+                <h1 className="title">Allow camera use</h1>
+                <h2 className="subtitle">all data will stay in your computer</h2>
+                <div>
+                    <span className="camera">📷</span>
+                </div>
             </div>
             <div className="start-button" onClick={props.continueHandler}>
                 Got it!

@@ -4,14 +4,18 @@ import HeartRateMonitor from '../../components/HeartRateMonitor/HeartRateMonitor
 import Instructions from '../../components/Instructions/Instructions'
 import VideoCapture from '../../components/VideoCapture/VideoCapture.js'
 
-
 const LatidoContent = (props) => {
 
     const [showInstructions, setShowInstructions] = useState(true)
-    const [cameraReady, setCameraReady] = useState(false)
+    const [showCameraInstructions, setShowCameraInstructions] = useState(true)
+    const [startSampling, setStartSampling] = useState(false)
 
     const onContinueInstructions = () => {
         setShowInstructions(false)
+    }
+
+    if (startSampling) {
+
     }
 
     if (showInstructions) {
@@ -22,7 +26,7 @@ const LatidoContent = (props) => {
         )
     }
 
-    if (!cameraReady) {
+    if (showCameraInstructions) {
         return (
             <div className={"LatidoContent"}>
                 <div className="latido-container">
@@ -33,10 +37,14 @@ const LatidoContent = (props) => {
                     <div className="guideLine right"></div>
                     <div className="guideLine guideLineHorizontal top"></div>
                     <div className="guideLine guideLineHorizontal bottom"></div>
-                    <div onClick={() => {
-                        setCameraReady(true)
+                </div>
+                <div className="camera-setup-instructions">
+                    <h1>Make sure your forehead is centered</h1>
+
+                    <div className="start-button" onClick={() => {
+                        setShowCameraInstructions(false)
                     }}>
-                        ok
+                        I'll stay still!
                     </div>
                 </div>
             </div>
