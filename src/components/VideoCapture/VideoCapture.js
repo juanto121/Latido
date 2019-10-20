@@ -2,20 +2,25 @@ import React, {useRef, useEffect} from 'react'
 import useCamera from './UseCamera'
 import './VideoCapture.css'
 
-const VideoCapture = () => {
+const VideoCapture = ({onNewFrame}) => {
     const videoElement = useRef()
     const canvasElement = useRef()
     const cameraStream = useCamera()
     const anim = useRef()
+
+    const canvasWidth = 70
+    const canvasHeight = 38
 
     if (cameraStream) {
         videoElement.current.srcObject = cameraStream
         videoElement.current.play()
     }
 
-    const renderCanvas = frame => {
+    const renderCanvas = () => {
+        const context = canvasElement.current.getContext('2d')
+        context.drawImage(videoElement.current, 290, 140, 70, 35, 0, 0, canvasWidth, canvasHeight)
+        onNewFrame(context.getImageData(0, 0, canvasWidth, canvasHeight))
         anim.current = requestAnimationFrame(renderCanvas)
-        canvasElement.current.getContext('2d').drawImage(videoElement.current, 290, 140, 70, 35, 0, 0, 70, 38)
     }
 
     useEffect(() => {

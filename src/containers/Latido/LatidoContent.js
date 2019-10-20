@@ -1,17 +1,25 @@
-import React, {useState} from 'react'
-import './LatidoContent.css'
+import React, {useState, useRef} from 'react'
 import HeartRateMonitor from '../../components/HeartRateMonitor/HeartRateMonitor'
 import Instructions from '../../components/Instructions/Instructions'
 import VideoCapture from '../../components/VideoCapture/VideoCapture.js'
+import './LatidoContent.css'
+import HeartMonitor from "../../monitor/HeartMonitor";
+import ImageProcessor from "../../monitor/ImageProcessor";
 
 const LatidoContent = (props) => {
 
-    const [showInstructions, setShowInstructions] = useState(true)
+    const [showInstructions, setShowInstructions] = useState(false)
     const [showCameraInstructions, setShowCameraInstructions] = useState(true)
     const [startSampling, setStartSampling] = useState(false)
 
+    const monitor = useRef(new HeartMonitor())
+
     const onContinueInstructions = () => {
         setShowInstructions(false)
+    }
+
+    const onNewFrameHandler = (frame) => {
+        monitor.current.addSample(ImageProcessor.getSampleFromFrame(frame))
     }
 
     if (startSampling) {
@@ -31,7 +39,7 @@ const LatidoContent = (props) => {
             <div className={"LatidoContent"}>
                 <div className="latido-container">
                     <div className={"measure-circle"}>
-                        <VideoCapture/>
+                        <VideoCapture onNewFrame={onNewFrameHandler}/>
                     </div>
                     <div className="guideLine left"></div>
                     <div className="guideLine right"></div>
