@@ -11,6 +11,7 @@ const LatidoContent = (props) => {
     const [showInstructions, setShowInstructions] = useState(false)
     const [showCameraInstructions, setShowCameraInstructions] = useState(true)
     const [startSampling, setStartSampling] = useState(false)
+    const [bpm, setBpm] = useState(0)
 
     const monitor = useRef(new HeartMonitor())
 
@@ -20,10 +21,8 @@ const LatidoContent = (props) => {
 
     const onNewFrameHandler = (frame) => {
         monitor.current.addSample(ImageProcessor.getSampleFromFrame(frame))
-    }
-
-    if (startSampling) {
-
+        const updatedBpm = monitor.current.getBpm()
+        console.log("BPM", updatedBpm.bpm)
     }
 
     if (showInstructions) {
@@ -39,7 +38,7 @@ const LatidoContent = (props) => {
             <div className={"LatidoContent"}>
                 <div className="latido-container">
                     <div className={"measure-circle"}>
-                        <VideoCapture onNewFrame={onNewFrameHandler}/>
+                        <VideoCapture startSampling={startSampling} onNewFrame={onNewFrameHandler}/>
                     </div>
                     <div className="guideLine left"></div>
                     <div className="guideLine right"></div>
@@ -50,7 +49,7 @@ const LatidoContent = (props) => {
                     <h1>Make sure your forehead is centered</h1>
 
                     <div className="start-button" onClick={() => {
-                        setShowCameraInstructions(false)
+                        setStartSampling(true)
                     }}>
                         I'll stay still!
                     </div>
