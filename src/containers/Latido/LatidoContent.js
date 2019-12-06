@@ -6,10 +6,12 @@ import './LatidoContent.css'
 import HeartMonitor from "../../monitor/HeartMonitor";
 import ImageProcessor from "../../monitor/ImageProcessor";
 import CountDown from "../../components/CountDown/CountDown";
+import BackgroundBlobs from "../../components/BackgroundBlobs/BackgroundBlobs";
+import LatidoHeader from "../../components/LatidoHeader/LatidoHeader";
 
 const LatidoContent = (props) => {
 
-    const [showInstructions, setShowInstructions] = useState(false)
+    const [showInstructions, setShowInstructions] = useState(true)
     const [showCameraInstructions, setShowCameraInstructions] = useState(true)
     const [startSampling, setStartSampling] = useState(false)
     const bpm = useRef(0)
@@ -28,32 +30,39 @@ const LatidoContent = (props) => {
 
     if (showInstructions) {
         return (
-            <div className={"LatidoContent"}>
-                <Instructions continueHandler={onContinueInstructions}/>
+            <div>
+                <LatidoHeader/>
+                <div className={"LatidoContent"}>
+                    <Instructions continueHandler={onContinueInstructions}/>
+                </div>
             </div>
         )
     }
 
     if (showCameraInstructions) {
         return (
-            <div className={"LatidoContent"}>
-                <div className="latido-container">
-                    <div className={"measure-circle"}>
-                        <VideoCapture startSampling={startSampling} onNewFrame={onNewFrameHandler}/>
-                        <CountDown startSampling={startSampling} onCountFinish={() => setShowCameraInstructions(false)}/>
+            <div>
+                <LatidoHeader/>
+                <div className={"LatidoContent"}>
+                    <div className="latido-container">
+                        <div className={"measure-circle"}>
+                            <VideoCapture startSampling={startSampling} onNewFrame={onNewFrameHandler}/>
+                            <CountDown startSampling={startSampling}
+                                       onCountFinish={() => setShowCameraInstructions(false)}/>
+                        </div>
+                        <div className="guideLine left"></div>
+                        <div className="guideLine right"></div>
+                        <div className="guideLine guideLineHorizontal top"></div>
+                        <div className="guideLine guideLineHorizontal bottom"></div>
                     </div>
-                    <div className="guideLine left"></div>
-                    <div className="guideLine right"></div>
-                    <div className="guideLine guideLineHorizontal top"></div>
-                    <div className="guideLine guideLineHorizontal bottom"></div>
-                </div>
-                <div className="camera-setup-instructions">
-                    <h1>Make sure your forehead is centered</h1>
+                    <div className="camera-setup-instructions">
+                        <h1>Make sure your forehead is centered</h1>
 
-                    <div className="start-button" onClick={() => {
-                        setStartSampling(true)
-                    }}>
-                        I'll stay still!
+                        <div className="start-button" onClick={() => {
+                            setStartSampling(true)
+                        }}>
+                            I'll stay still!
+                        </div>
                     </div>
                 </div>
             </div>
@@ -61,10 +70,14 @@ const LatidoContent = (props) => {
     }
 
     return (
-        <div className={"LatidoContent"}>
-            <div className={"measure-circle"}>
-                <VideoCapture show={false} startSampling={startSampling} onNewFrame={onNewFrameHandler}/>
-                <HeartRateMonitor bpmRef={bpm}/>
+        <div>
+            <BackgroundBlobs bpm={bpm.current}/>
+            <LatidoHeader/>
+            <div className={"LatidoContent"}>
+                <div className={"measure-circle"}>
+                    <VideoCapture show={false} startSampling={startSampling} onNewFrame={onNewFrameHandler}/>
+                    <HeartRateMonitor bpmRef={bpm}/>
+                </div>
             </div>
         </div>
     )

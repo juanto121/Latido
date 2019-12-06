@@ -1,10 +1,11 @@
 import React, {useState} from 'react'
 import './HearRateMonitor.css'
 import useInterval from '../Utils/UseInterval'
+import BackgroundBlobs from "../BackgroundBlobs/BackgroundBlobs";
 
 const HeartRateMonitor = ({bpmRef}) => {
 
-    const [bpm, setBpm] = useState(bpmRef.current)
+    const [bpm, setBpm] = useState(parseInt(bpmRef.current))
 
     useInterval(() => {
         setBpm(parseInt(bpmRef.current))
