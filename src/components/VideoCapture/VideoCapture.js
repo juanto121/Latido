@@ -2,7 +2,7 @@ import React, {useRef, useEffect} from 'react'
 import useCamera from './UseCamera'
 import './VideoCapture.css'
 
-const VideoCapture = ({startSampling, onNewFrame}) => {
+const VideoCapture = ({show = true, startSampling, onNewFrame}) => {
     const videoElement = useRef(null)
     const canvasElement = useRef(null)
     const cameraStream = useCamera()
@@ -24,14 +24,16 @@ const VideoCapture = ({startSampling, onNewFrame}) => {
     }
 
     useEffect(() => {
-        anim.current = requestAnimationFrame(renderCanvas)
+        console.log(startSampling)
+        if(startSampling)
+            anim.current = requestAnimationFrame(renderCanvas)
         return () => cancelAnimationFrame(anim.current)
-    }, [])
+    }, [startSampling])
 
     return (
-        <div className="videoCaptureContainer">
+        <div className='videoCaptureContainer' style={{display: show?'block':'none'}}>
             <canvas ref={canvasElement} width={canvasWidth} height={canvasHeight}></canvas>
-            <video className="VideoCapture" ref={videoElement}></video>
+            <video className='VideoCapture' ref={videoElement}></video>
         </div>
     )
 

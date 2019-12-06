@@ -26,6 +26,11 @@
     color: #D4268F;
 }
 
+.measure-circle-bpm .bpm-value {
+    display: block;
+    font-size: 1.8em;
+}
+
 .measure-circle-subtitle {
     color: rgba(212, 38, 143, 0.49);
 }

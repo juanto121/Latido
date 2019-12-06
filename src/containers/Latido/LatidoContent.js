@@ -5,13 +5,14 @@ import VideoCapture from '../../components/VideoCapture/VideoCapture.js'
 import './LatidoContent.css'
 import HeartMonitor from "../../monitor/HeartMonitor";
 import ImageProcessor from "../../monitor/ImageProcessor";
+import CountDown from "../../components/CountDown/CountDown";
 
 const LatidoContent = (props) => {
 
     const [showInstructions, setShowInstructions] = useState(false)
     const [showCameraInstructions, setShowCameraInstructions] = useState(true)
     const [startSampling, setStartSampling] = useState(false)
-    const [bpm, setBpm] = useState(0)
+    const bpm = useRef(0)
 
     const monitor = useRef(new HeartMonitor())
 
@@ -22,7 +23,7 @@ const LatidoContent = (props) => {
     const onNewFrameHandler = (frame) => {
         monitor.current.addSample(ImageProcessor.getSampleFromFrame(frame))
         const updatedBpm = monitor.current.getBpm()
-        console.log("BPM", updatedBpm.bpm)
+        bpm.current = updatedBpm.bpm
     }
 
     if (showInstructions) {
@@ -39,6 +40,7 @@ const LatidoContent = (props) => {
                 <div className="latido-container">
                     <div className={"measure-circle"}>
                         <VideoCapture startSampling={startSampling} onNewFrame={onNewFrameHandler}/>
+                        <CountDown startSampling={startSampling} onCountFinish={() => setShowCameraInstructions(false)}/>
                     </div>
                     <div className="guideLine left"></div>
                     <div className="guideLine right"></div>
@@ -61,7 +63,8 @@ const LatidoContent = (props) => {
     return (
         <div className={"LatidoContent"}>
             <div className={"measure-circle"}>
-                <HeartRateMonitor/>
+                <VideoCapture show={false} startSampling={startSampling} onNewFrame={onNewFrameHandler}/>
+                <HeartRateMonitor bpmRef={bpm}/>
             </div>
         </div>
     )
