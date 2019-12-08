@@ -2,17 +2,25 @@ import React, {useRef, useEffect} from 'react'
 import useCamera from './UseCamera'
 import './VideoCapture.css'
 
-const VideoCapture = ({show = true, startSampling, onNewFrame}) => {
+const VideoCapture = ({show = true, startSampling, onNewFrame, test=false}) => {
     const videoElement = useRef(null)
     const canvasElement = useRef(null)
-    const cameraStream = useCamera()
+    let cameraStream = useCamera()
     const anim = useRef()
 
     const canvasWidth = 70
     const canvasHeight = 38
 
+    console.log(cameraStream, test)
+
     if (cameraStream) {
-        videoElement.current.srcObject = cameraStream
+
+        if(!test) {
+            videoElement.current.srcObject = cameraStream
+        } else {
+            videoElement.current.src = process.env.PUBLIC_URL + "/testvids/75.webm"
+            videoElement.current.loop = true
+        }
         videoElement.current.play()
     }
 

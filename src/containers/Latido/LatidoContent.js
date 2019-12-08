@@ -14,6 +14,7 @@ const LatidoContent = (props) => {
     const [showInstructions, setShowInstructions] = useState(true)
     const [showCameraInstructions, setShowCameraInstructions] = useState(true)
     const [startSampling, setStartSampling] = useState(false)
+    const [testVideo, setTestVideo] = useState(false)
     const bpm = useRef(0)
 
     const monitor = useRef(new HeartMonitor())
@@ -34,10 +35,16 @@ const LatidoContent = (props) => {
                 <LatidoHeader/>
                 <div className={"LatidoContent"}>
                     <Instructions continueHandler={onContinueInstructions}/>
+                    <label>
+                        Use test video
+                        <input type="checkbox" checked={testVideo} onChange={() => setTestVideo(!testVideo)}/>
+                    </label>
                 </div>
             </div>
         )
     }
+
+    console.log(testVideo)
 
     if (showCameraInstructions) {
         return (
@@ -46,7 +53,7 @@ const LatidoContent = (props) => {
                 <div className={"LatidoContent"}>
                     <div className="latido-container">
                         <div className={"measure-circle"}>
-                            <VideoCapture startSampling={startSampling} onNewFrame={onNewFrameHandler}/>
+                            <VideoCapture startSampling={startSampling} onNewFrame={onNewFrameHandler} test={testVideo}/>
                             <CountDown startSampling={startSampling}
                                        onCountFinish={() => setShowCameraInstructions(false)}/>
                         </div>
@@ -75,7 +82,7 @@ const LatidoContent = (props) => {
             <LatidoHeader/>
             <div className={"LatidoContent"}>
                 <div className={"measure-circle"}>
-                    <VideoCapture show={false} startSampling={startSampling} onNewFrame={onNewFrameHandler}/>
+                    <VideoCapture show={false} startSampling={startSampling} onNewFrame={onNewFrameHandler} test={testVideo}/>
                     <HeartRateMonitor bpmRef={bpm}/>
                 </div>
             </div>

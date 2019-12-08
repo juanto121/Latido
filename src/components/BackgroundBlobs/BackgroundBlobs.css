@@ -1,5 +1,6 @@
 .BackgroundBlobs {
     position: absolute;
+    overflow:hidden;
     height: 100vh;
     width:100%;
     margin:0;

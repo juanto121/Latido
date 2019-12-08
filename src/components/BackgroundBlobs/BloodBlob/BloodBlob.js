@@ -15,8 +15,6 @@ const BloodBlob = ({size, bpmDelay}) => {
         }
     }, bpmDelay)
 
-    console.log(window.innerHeight, y)
-
     const blobStyle = {
         "display": x > pageBound ? "none":"block",
         "backgroundColor":" #d4429e",

@@ -1,46 +1,59 @@
+import SignalBuffer from './SignalBuffer'
+
 class HeartMonitor {
     constructor() {
         this.bufferSize = 1024
-        this.buffer = new Array(this.bufferSize)
-        this.dataTimes = new Array(this.bufferSize)
-        this.dataValues = new Array(this.bufferSize)
+        this.gBuffer = new SignalBuffer(this.bufferSize)
+        this.rBuffer = new SignalBuffer(this.bufferSize)
+        this.bBuffer = new SignalBuffer(this.bufferSize)
         this.sampleCount = 0
         this.minBpm = 50
         this.maxBpm = 200
-    }
-
-    bufferFull() {
-        return this.buffer.length >= this.bufferSize
+        this.icaWorker = new Worker(process.env.PUBLIC_URL + "/ICA.js")
+        this.icaWorker.addEventListener('message', this.onICASignal.bind(this))
+        this.bpmBuffer = new SignalBuffer(500)
+        this.icaResults = []
+        this.nearest = [0,0,0]
     }
 
     getFps() {
-        const len = this.buffer.length
-        const last = this.buffer[this.sampleCount].time
-        const first = this.buffer[0].time
+        const len = this.gBuffer.getTotalLength()
+        const last = this.gBuffer.getLast().time
+        const first = this.gBuffer.getFirst().time
         const totalTime = (last - first) / 1000
         const realFps = len / totalTime
         return parseInt(realFps)
     }
 
-    addSample(sample) {
-        if (this.bufferFull()) {
-            this.buffer.shift()
-            this.dataTimes.shift()
-            this.dataValues.shift()
-        } else {
-            ++this.sampleCount
+    onICASignal(event) {
+        this.icaResults.push(event.data)
+        //console.log("Got signals:", event.data)
+        const baseLine = this.bpmBuffer.getAverage()
+        let min = Math.abs(event.data[0]-baseLine)
+        let minIndex = 0
+        for(let i = 1; i < event.data.length; i++) {
+            const diff = Math.abs(event.data[i]-baseLine)
+            if(diff < min){
+                minIndex = i
+            }
         }
-        this.buffer[this.sampleCount] = sample
-        this.dataTimes[this.sampleCount] = sample.time
-        this.dataValues[this.sampleCount] = sample.value
+        this.nearest[minIndex]++
+        console.log(this.nearest, event.data[minIndex], event.data)
+    }
+
+    addSample(sample) {
+        this.gBuffer.addSample(sample.time, sample.green)
+        this.rBuffer.addSample(sample.time, sample.red)
+        this.bBuffer.addSample(sample.time, sample.blue)
+        if (this.sampleCount < this.bufferSize) ++this.sampleCount
     }
 
     binToBpm(bin) {
-        return (60 * bin * this.getFps()) / this.bufferSize;
+        return (60 * bin * this.getFps()) / this.bufferSize
     }
 
     bpmToBin(bpm) {
-        return (bpm * this.bufferSize) / (60 * this.getFps());
+        return (bpm * this.bufferSize) / (60 * this.getFps())
     }
 
     getBpm() {
@@ -60,38 +73,58 @@ class HeartMonitor {
                             [0.71, 0.93]
                             [0.94, 1.11]
         */
-        const fft = this.getFFT();
+        if (this.sampleCount >= this.bufferSize) {
 
-        const minbinpossible = parseInt(this.bpmToBin(this.minBpm));
-        const maxbinpossible = parseInt(this.bpmToBin(this.maxBpm));
+            this.runICA({rBuffer:this.rBuffer, gBuffer:this.gBuffer, bBuffer:this.bBuffer})
 
-        let maxbpm = 0;
-        let maxbpmindex = 0;
+            const fft = this.getFFT()
 
-        for (let i = minbinpossible; i < maxbinpossible; i++) {
-            if (fft[i] > maxbpm) {
-                maxbpmindex = i;
-                maxbpm = fft[i];
+            const minbinpossible = parseInt(this.bpmToBin(this.minBpm))
+            const maxbinpossible = parseInt(this.bpmToBin(this.maxBpm))
+
+            let maxbpm = 0
+            let maxbpmindex = 0
+
+            for (let i = minbinpossible; i < maxbinpossible; i++) {
+                if (fft[i] > maxbpm) {
+                    maxbpmindex = i
+                    maxbpm = fft[i]
+                }
             }
+
+            const bpm = this.binToBpm(maxbpmindex)
+
+            this.bpmBuffer.addSample(Date.now(), bpm)
+
+            return {bpm: this.bpmBuffer.getAverage(), freq: fft}
+        } else {
+            return {bpm: 0}
         }
-
-
-        return {bpm: this.binToBpm(maxbpmindex), freq: fft};
     }
 
     getFFT() {
-        if (this.sampleCount > 10) {
-            const len = this.bufferSize;
-            const startTime = this.dataTimes[0];
-            const endTime = this.dataTimes[this.sampleCount];
-            const linearSpace = window.numeric.linspace(startTime, endTime, len);
-            const interpolation = window.everpolate.linear(linearSpace, this.dataTimes, this.dataValues);
-            const bfsize = linearSpace.length;
-            const fft = new window.FFT(bfsize, this.getFps());
-            fft.forward(interpolation);
-            return fft.spectrum;
+        if (this.sampleCount === this.bufferSize) {
+            const len = this.bufferSize
+            const startTime = this.gBuffer.getFirst().time
+            const endTime = this.gBuffer.getLast().time
+            const linearSpace = window.numeric.linspace(startTime, endTime, len)
+            const interpolation = window.everpolate.linear(linearSpace, this.gBuffer.dataTimes, this.gBuffer.dataValues)
+            const bfsize = linearSpace.length
+            const fft = new window.FFT(bfsize, this.getFps())
+            fft.forward(interpolation)
+            return fft.spectrum
+        } else {
+            return [0]
         }
+    }
 
+
+    runICA(signals) {
+        try {
+            this.icaWorker.postMessage(signals)
+        } catch (err) {
+            console.log("Error ICA:", err)
+        }
     }
 }
 
