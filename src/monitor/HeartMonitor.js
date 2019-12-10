@@ -38,7 +38,6 @@ class HeartMonitor {
             }
         }
         this.nearest[minIndex]++
-        console.log(this.nearest, event.data[minIndex], event.data)
     }
 
     addSample(sample) {
@@ -91,6 +90,7 @@ class HeartMonitor {
                     maxbpm = fft[i]
                 }
             }
+
 
             const bpm = this.binToBpm(maxbpmindex)
 
