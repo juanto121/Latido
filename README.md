@@ -15,7 +15,7 @@ Similar projects:
  by camillieane [Pulse](https://github.com/camilleanne/pulse)
   
 ## Demo
-Test it for yourself [demo page](https://latido.herokuapp.com)
+Test it for yourself [demo page](https://r-latido.now.sh)
 
 Make sure to: Don't move and have good lighting.
 Current setup uses a buffer of 1024 samples so it takes about 17 seconds to estimate the heart beat on a desktop/laptop taking video at 60 FPS
